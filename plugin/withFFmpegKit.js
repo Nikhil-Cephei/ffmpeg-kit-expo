@@ -1,8 +1,22 @@
 'use strict';
 
-const {withDangerousMod, withProjectBuildGradle} = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
+
+// Resolve @expo/config-plugins from the app root (process.cwd()) so this works
+// both when the package is installed from npm and when used as a local file: link.
+function requireFromProject(moduleId) {
+  try {
+    return require(require.resolve(moduleId, {paths: [process.cwd()]}));
+  } catch (_) {
+    return require(moduleId);
+  }
+}
+
+const {withDangerousMod, withProjectBuildGradle} = requireFromProject('@expo/config-plugins');
+
+const AAR_FLAT_DIR =
+  '        flatDir { dirs "$rootDir/../node_modules/@nikhil-cephei/ffmpeg-kit-react-native/android/libs" }';
 
 const withFFmpegKit = (config, options = {}) => {
   const subspec = options.subspec || 'full-gpl';
@@ -27,14 +41,52 @@ const withFFmpegKit = (config, options = {}) => {
     },
   ]);
 
-  // Android — remove retired ffmpegKitPackage ext var
+  // Android (build.gradle) — remove retired ffmpegKitPackage ext var and inject flatDir
+  // into allprojects > repositories (classic RN template)
   config = withProjectBuildGradle(config, (config) => {
-    config.modResults.contents = config.modResults.contents.replace(
+    let contents = config.modResults.contents;
+
+    contents = contents.replace(
       /[ \t]*ffmpegKitPackage\s*=\s*["'][^"']*["'][ \t]*\r?\n/g,
       '',
     );
+
+    if (!contents.includes('ffmpeg-kit-react-native/android/libs')) {
+      // Inject after the opening brace of the first `repositories {` block inside `allprojects`
+      contents = contents.replace(
+        /(allprojects\s*\{[\s\S]*?repositories\s*\{)/,
+        `$1\n${AAR_FLAT_DIR}`,
+      );
+    }
+
+    config.modResults.contents = contents;
     return config;
   });
+
+  // Android (settings.gradle) — inject flatDir into dependencyResolutionManagement > repositories
+  // used by newer React Native / Expo SDK templates
+  config = withDangerousMod(config, [
+    'android',
+    (config) => {
+      const settingsPath = path.join(config.modRequest.platformProjectRoot, 'settings.gradle');
+      if (!fs.existsSync(settingsPath)) return config;
+
+      let contents = fs.readFileSync(settingsPath, 'utf8');
+
+      if (
+        contents.includes('dependencyResolutionManagement') &&
+        !contents.includes('ffmpeg-kit-react-native/android/libs')
+      ) {
+        contents = contents.replace(
+          /(dependencyResolutionManagement\s*\{[\s\S]*?repositories\s*\{)/,
+          `$1\n${AAR_FLAT_DIR}`,
+        );
+        fs.writeFileSync(settingsPath, contents);
+      }
+
+      return config;
+    },
+  ]);
 
   return config;
 };
