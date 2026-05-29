@@ -1,3 +1,5 @@
+import java.net.URL
+
 buildscript {
   repositories {
     google()
@@ -33,7 +35,7 @@ android {
   compileSdkVersion 33
 
   defaultConfig {
-    minSdkVersion safeExtGet('ffmpegKitPackage', 'https').contains("-lts") ? 16 : 24
+    minSdkVersion 24
     targetSdkVersion 33
     versionCode 602
     versionName "6.0.2"
@@ -56,6 +58,7 @@ android {
 repositories {
   mavenCentral()
   google()
+  flatDir { dirs "${projectDir}/libs" }
 
   def found = false
   def defaultDir = null
@@ -125,5 +128,6 @@ repositories {
 
 dependencies {
   api 'com.facebook.react:react-native:+'
-  implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(safeExtGet('ffmpegKitPackage', 'https')) + ':' + safePackageVersion(safeExtGet('ffmpegKitPackage', 'https'))
+  implementation(name: 'ffmpeg-kit-full-gpl', ext: 'aar')
+  implementation 'com.arthenica:smart-exception-java:0.2.1'
 }

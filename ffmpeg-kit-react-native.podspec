@@ -3,7 +3,7 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = package["name"]
+  s.name         = "ffmpeg-kit-react-native"
   s.version      = package["version"]
   s.summary      = package["description"]
   s.homepage     = package["homepage"]
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.requires_arc      = true
   s.static_framework  = true
 
-  s.source       = { :git => "https://github.com/arthenica/ffmpeg-kit.git", :tag => "react.native.v#{s.version}" }
+  s.source       = { :git => "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl.git", :branch => "main" }
 
   s.default_subspec   = 'https'
 
@@ -121,7 +121,7 @@ Pod::Spec.new do |s|
   s.subspec 'full-gpl' do |ss|
       ss.source_files      = '**/FFmpegKitReactNativeModule.m',
                              '**/FFmpegKitReactNativeModule.h'
-      ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
+      ss.dependency 'ffmpeg-kit-ios-full-gpl', '6.0'
       ss.ios.deployment_target = '12.1'
   end
 

@@ -1,5 +1,5 @@
 {
-  "name": "ffmpeg-kit-react-native",
+  "name": "@nikhil-cephei/ffmpeg-kit-react-native",
   "version": "6.0.2",
   "description": "FFmpeg Kit for React Native",
   "main": "src/index",
@@ -7,6 +7,7 @@
   "react-native": "src/index",
   "source": "src/index",
   "scripts": {
+    "postinstall": "node scripts/setup.js",
     "test": "jest",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "release": "release-it"
@@ -18,13 +19,16 @@
     "ffmpeg-kit",
     "ios"
   ],
-  "repository": "https://github.com/arthenica/ffmpeg-kit",
-  "author": "ARTHENICA <open-source@arthenica.com> (https://www.arthenica.com)",
+  "repository": "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl",
+  "author": "Nikhil Makwana <nikhil.makwana@cepheiinfotech.com>",
   "license": "LGPL-3.0",
   "bugs": {
-    "url": "https://github.com/arthenica/ffmpeg-kit/issues"
+    "url": "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl/issues"
   },
-  "homepage": "https://github.com/arthenica/ffmpeg-kit",
+  "homepage": "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl",
+  "expo": {
+    "plugin": "./plugin/withFFmpegKit"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
