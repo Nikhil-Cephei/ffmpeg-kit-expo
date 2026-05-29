@@ -1,6 +1,6 @@
 {
   "name": "@nikhil-cephei/ffmpeg-kit-react-native",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "FFmpeg Kit for React Native",
   "main": "src/index",
   "types": "src/index.d.ts",
@@ -19,7 +19,10 @@
     "ffmpeg-kit",
     "ios"
   ],
-  "repository": "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl.git"
+  },
   "author": "Nikhil Makwana <nikhil.makwana@cepheiinfotech.com>",
   "license": "LGPL-3.0",
   "bugs": {
