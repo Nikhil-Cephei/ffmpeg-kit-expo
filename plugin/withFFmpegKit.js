@@ -28,11 +28,11 @@ const withFFmpegKit = (config, options = {}) => {
       const podfilePath = path.join(config.modRequest.platformProjectRoot, 'Podfile');
       let contents = fs.readFileSync(podfilePath, 'utf8');
 
-      if (contents.includes('ffmpeg-kit-react-native')) return config;
+      if (contents.includes("pod 'ffmpeg-kit-react-native")) return config;
 
       const pods = [
         `  pod 'ffmpeg-kit-ios-full-gpl', :podspec => '../node_modules/@nikhil-cephei/ffmpeg-kit-react-native/ios/ffmpeg-kit-ios-full-gpl.podspec'`,
-        `  pod 'ffmpeg-kit-react-native', :subspecs => ['${subspec}'], :podspec => '../node_modules/@nikhil-cephei/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec'`,
+        `  pod 'ffmpeg-kit-react-native/${subspec}', :podspec => '../node_modules/@nikhil-cephei/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec'`,
       ].join('\n');
 
       contents = contents.replace(/^(\s*use_expo_modules!)/m, `${pods}\n\n$1`);
