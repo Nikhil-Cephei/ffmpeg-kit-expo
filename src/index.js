@@ -1,6 +1,6 @@
-import {NativeEventEmitter, NativeModules} from 'react-native';
+import {NativeEventEmitter, NativeModules, TurboModuleRegistry} from 'react-native';
 
-const {FFmpegKitReactNativeModule} = NativeModules;
+const FFmpegKitReactNativeModule = TurboModuleRegistry.get('FFmpegKitReactNativeModule') ?? NativeModules.FFmpegKitReactNativeModule;
 
 const ffmpegSessionCompleteCallbackMap = new Map()
 const ffprobeSessionCompleteCallbackMap = new Map()
@@ -31,7 +31,7 @@ export const Signal = {
 
 class FFmpegKitReactNativeEventEmitter extends NativeEventEmitter {
   constructor() {
-    super(FFmpegKitReactNativeModule);
+    super(FFmpegKitReactNativeModule ?? undefined);
   }
 
   addListener(eventType, listener, context) {
@@ -1611,7 +1611,7 @@ class FFmpegKitFactory {
   }
 
   static getVersion() {
-    return "6.0.2";
+    return "6.0.10";
   }
 
   static getLogRedirectionStrategy(sessionId) {

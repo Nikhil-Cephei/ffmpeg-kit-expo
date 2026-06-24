@@ -62,3 +62,5 @@ lib/
 # ffmpeg-kit self-hosted binaries (downloaded by postinstall)
 android/libs/
 ios/*.xcframework
+
+.firecrawl

@@ -1,6 +1,6 @@
 {
   "name": "@nikhil-cephei/ffmpeg-kit-react-native",
-  "version": "6.0.8",
+  "version": "6.0.10",
   "description": "FFmpeg Kit for React Native",
   "main": "src/index",
   "types": "src/index.d.ts",
@@ -31,6 +31,14 @@
   "homepage": "https://github.com/Nikhil-Cephei/ffmpeg-kit-rn-full-gpl",
   "expo": {
     "plugin": "./app.plugin.js"
+  },
+  "codegenConfig": {
+    "name": "FFmpegKitReactNativeSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.arthenica.ffmpegkit.reactnative"
+    }
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

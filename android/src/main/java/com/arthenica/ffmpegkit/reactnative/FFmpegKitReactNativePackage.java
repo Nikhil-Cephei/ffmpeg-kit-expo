@@ -19,28 +19,47 @@
 
 package com.arthenica.ffmpegkit.reactnative;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import com.facebook.react.ReactPackage;
+import com.facebook.react.TurboReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.uimanager.ViewManager;
+import com.facebook.react.module.model.ReactModuleInfo;
+import com.facebook.react.module.model.ReactModuleInfoProvider;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class FFmpegKitReactNativePackage implements ReactPackage {
+public class FFmpegKitReactNativePackage extends TurboReactPackage {
 
-  @NonNull
+  @Nullable
   @Override
-  public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-    return Collections.singletonList(new FFmpegKitReactNativeModule(reactContext));
+  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
+    if (name.equals(FFmpegKitReactNativeModule.NAME)) {
+      return new FFmpegKitReactNativeModule(reactContext);
+    } else {
+      return null;
+    }
   }
 
-  @NonNull
   @Override
-  public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return Collections.emptyList();
+  public ReactModuleInfoProvider getReactModuleInfoProvider() {
+    return () -> {
+      final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
+      moduleInfos.put(
+        FFmpegKitReactNativeModule.NAME,
+        new ReactModuleInfo(
+          FFmpegKitReactNativeModule.NAME,
+          FFmpegKitReactNativeModule.NAME,
+          false,  // canOverrideExistingModule
+          false,  // needsEagerInit
+          false,  // hasConstants
+          false,  // isCxxModule
+          BuildConfig.IS_NEW_ARCHITECTURE_ENABLED  // isTurboModule
+        )
+      );
+      return moduleInfos;
+    };
   }
 
 }

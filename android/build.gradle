@@ -11,6 +11,10 @@ buildscript {
   }
 }
 
+def isNewArchitectureEnabled() {
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
 apply plugin: 'com.android.library'
 
 static def safePackageName(String packageName) {
@@ -37,8 +41,13 @@ android {
   defaultConfig {
     minSdkVersion 24
     targetSdkVersion 33
-    versionCode 602
-    versionName "6.0.2"
+    versionCode 610
+    versionName "6.0.10"
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+  }
+
+  buildFeatures {
+    buildConfig true
   }
 
   buildTypes {
@@ -46,12 +55,20 @@ android {
       minifyEnabled false
     }
   }
+
   lintOptions {
     disable 'GradleCompatible'
   }
+
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_11
     targetCompatibility JavaVersion.VERSION_11
+  }
+
+  sourceSets {
+    main {
+      java.srcDirs += isNewArchitectureEnabled() ? ['src/newarch'] : ['src/oldarch']
+    }
   }
 }
 
